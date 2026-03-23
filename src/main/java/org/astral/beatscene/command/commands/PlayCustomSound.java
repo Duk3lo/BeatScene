@@ -12,7 +12,12 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.SoundUtil;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import org.astral.beatscene.Main;
+import org.astral.beatscene.audio.AudioInput;
+import org.astral.beatscene.audio.visualiser.Terminal;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class PlayCustomSound extends AbstractPlayerCommand {
 
@@ -22,10 +27,17 @@ public class PlayCustomSound extends AbstractPlayerCommand {
 
     @Override
     protected void execute(@NotNull CommandContext commandContext, @NotNull Store<EntityStore> store, @NotNull Ref<EntityStore> ref, @NotNull PlayerRef playerRef, @NotNull World world) {
-        int index = SoundEvent.getAssetMap().getIndex("Perfect");
         TransformComponent transform = store.getComponent(ref, EntityModule.get().getTransformComponentType());
-        if (transform == null)return;
+        if (transform == null) return;
+        int index = SoundEvent.getAssetMap().getIndex("Perfect");
         SoundUtil.playSoundEvent3dToPlayer(ref, index, SoundCategory.UI, transform.getPosition(), store);
-        //ItemPrePhysicsSystem.applyGravity();
+
+        List<float[]> frames = AudioInput.getFrames();
+        if (frames.isEmpty()) {
+            Main.getInstance().getLogger().atSevere().log("Error: No hay frames. ¿Se analizó el OGG?");
+            return;
+        }
+        Terminal terminal = new Terminal();
+        terminal.open(frames);
     }
 }
