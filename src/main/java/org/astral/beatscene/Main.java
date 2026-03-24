@@ -6,12 +6,11 @@ import org.astral.beatscene.audio.AudioInput;
 import org.astral.beatscene.command.BeatCommand;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
-
 public final class Main extends JavaPlugin {
 
     private static Main instance;
 
+    // ¡Excelente inclusión! Necesario para abrir un JFrame desde un entorno de servidor.
     static {
         System.setProperty("java.awt.headless", "false");
     }
@@ -23,15 +22,18 @@ public final class Main extends JavaPlugin {
     @Override
     protected void setup() {
         instance = this;
+
         try {
-            getLogger().atInfo().log("Intentando preparar audio...");
-            AudioInput.prepareAudio();
+            getLogger().atInfo().log("Preparando análisis de audio mediante STBVorbis...");
+            AudioInput.prepareAudio(); // Se llama una sola vez
+            getLogger().atInfo().log("Audio cargado y procesado exitosamente.");
         } catch (Throwable t) {
-            getLogger().atWarning().log("No se pudo preparar el audio (Entorno Servidor), pero el plugin continuará.");
+            getLogger().atWarning().log("No se pudo preparar el audio (Entorno Servidor), pero el plugin continuará. Error: " + t.getMessage());
         }
-        getLogger().atInfo().log("Preparando análisis de audio...");
-        AudioInput.prepareAudio();
+
+        // Registrar comandos
         BeatCommand.registerCommand(getCommandRegistry());
+
         getLogger().atInfo().log("BeatScene Loaded");
     }
 
@@ -41,11 +43,12 @@ public final class Main extends JavaPlugin {
 
     @Override
     protected void shutdown() {
-        instance.getLogger().atInfo().log("Beat Scene close");
+        if (instance != null) {
+            instance.getLogger().atInfo().log("Beat Scene close");
+        }
     }
 
     public static Main getInstance(){
         return instance;
     }
-
 }

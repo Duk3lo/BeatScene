@@ -1,0 +1,13 @@
+{
+  "Layers": [
+    {
+      "Files": [
+        "Sounds/Beat/miss.ogg"
+      ],
+      "Looping": false
+    }
+  ],
+  "Volume": 1.0,
+  "MaxDistance": 30.0,
+  "StartAttenuationDistance": 5.0
+}

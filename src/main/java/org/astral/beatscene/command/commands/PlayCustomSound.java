@@ -14,10 +14,10 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import org.astral.beatscene.Main;
 import org.astral.beatscene.audio.AudioInput;
+import org.astral.beatscene.audio.visualiser.InstrumentDetector;
+import org.astral.beatscene.audio.visualiser.SimpleVisualizer;
 import org.astral.beatscene.audio.visualiser.Terminal;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class PlayCustomSound extends AbstractPlayerCommand {
 
@@ -29,15 +29,25 @@ public class PlayCustomSound extends AbstractPlayerCommand {
     protected void execute(@NotNull CommandContext commandContext, @NotNull Store<EntityStore> store, @NotNull Ref<EntityStore> ref, @NotNull PlayerRef playerRef, @NotNull World world) {
         TransformComponent transform = store.getComponent(ref, EntityModule.get().getTransformComponentType());
         if (transform == null) return;
-        int index = SoundEvent.getAssetMap().getIndex("Perfect");
+
+        // Ejecuta el sonido dentro del juego Hytale
+        int index = SoundEvent.getAssetMap().getIndex("Miss");
         SoundUtil.playSoundEvent3dToPlayer(ref, index, SoundCategory.UI, transform.getPosition(), store);
 
-        List<float[]> frames = AudioInput.getFrames();
-        if (frames.isEmpty()) {
-            Main.getInstance().getLogger().atSevere().log("Error: No hay frames. ¿Se analizó el OGG?");
+        // Obtenemos los datos desde STBVorbis
+        AudioInput.AudioData data = AudioInput.getAudioData();
+
+        if (data == null || data.frames.isEmpty()) {
+            Main.getInstance().getLogger().atSevere().log("Error: No hay datos de audio cargados.");
             return;
         }
+
+        // Abrimos la terminal
         Terminal terminal = new Terminal();
-        terminal.open(frames);
+        terminal.open(data);
+        //SimpleVisualizer simpleVisualizer = new SimpleVisualizer();
+        //simpleVisualizer.open(data);
+        InstrumentDetector detector = new InstrumentDetector();
+        detector.open(data);
     }
 }
