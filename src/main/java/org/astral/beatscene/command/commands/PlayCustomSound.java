@@ -31,7 +31,7 @@ public class PlayCustomSound extends AbstractPlayerCommand {
         if (transform == null) return;
 
         // Ejecuta el sonido dentro del juego Hytale
-        int index = SoundEvent.getAssetMap().getIndex("Miss");
+        int index = SoundEvent.getAssetMap().getIndex("Perfect");
         SoundUtil.playSoundEvent3dToPlayer(ref, index, SoundCategory.UI, transform.getPosition(), store);
 
         // Obtenemos los datos desde STBVorbis

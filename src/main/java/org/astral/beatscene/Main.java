@@ -10,7 +10,6 @@ public final class Main extends JavaPlugin {
 
     private static Main instance;
 
-    // ¡Excelente inclusión! Necesario para abrir un JFrame desde un entorno de servidor.
     static {
         System.setProperty("java.awt.headless", "false");
     }
@@ -25,15 +24,13 @@ public final class Main extends JavaPlugin {
 
         try {
             getLogger().atInfo().log("Preparando análisis de audio mediante STBVorbis...");
-            AudioInput.prepareAudio(); // Se llama una sola vez
+            AudioInput.prepareAudio();
             getLogger().atInfo().log("Audio cargado y procesado exitosamente.");
         } catch (Throwable t) {
             getLogger().atWarning().log("No se pudo preparar el audio (Entorno Servidor), pero el plugin continuará. Error: " + t.getMessage());
         }
 
-        // Registrar comandos
         BeatCommand.registerCommand(getCommandRegistry());
-
         getLogger().atInfo().log("BeatScene Loaded");
     }
 

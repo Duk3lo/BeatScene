@@ -28,7 +28,7 @@ public final class AudioInput {
 
     public static void prepareAudio() {
         try {
-            InputStream is = Main.class.getResourceAsStream("/Common/Sounds/Beat/miss.ogg");
+            InputStream is = Main.class.getResourceAsStream("/Common/Sounds/Beat/perfect.ogg");
             if (is == null) {
                 System.out.println("[BeatScene] ERROR: Archivo perfect.ogg no encontrado.");
                 return;

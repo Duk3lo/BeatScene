@@ -60,7 +60,7 @@ public class InstrumentDetector {
         alSourcePlay(sourcePointer);
         isPlaying = true;
 
-        new Timer(16, e -> {
+        new Timer(16, _ -> {
             if (isPlaying) {
                 panel.updateVisuals();
                 panel.repaint();
@@ -191,7 +191,7 @@ public class InstrumentDetector {
             g2d.setFont(new Font("Monospaced", Font.BOLD, 15));
             FontMetrics fm = g2d.getFontMetrics();
             int textWidth = fm.stringWidth(name);
-            g2d.drawString(name, cx - (textWidth / 2) + textXOffset, cy + (baseRadius * 2.5f) + 20 + textYOffset);
+            g2d.drawString(name, cx - ((float) textWidth / 2) + textXOffset, cy + (baseRadius * 2.5f) + 20 + textYOffset);
         }
     }
 
